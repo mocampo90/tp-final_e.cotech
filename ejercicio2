@@ -1,1 +1,23 @@
 
+def procesar_pedido(pedido):
+    total = 0
+    for item in pedido["items"]:
+        total += item["precio"] * item["cantidad"]
+    
+    if total > 100:
+        descuento = total * 0.1
+        total = total - descuento
+    
+    return {"cliente": pedido["cliente"], "total": total}
+
+if __name__ == "__main__":
+    pedido_ejemplo = {
+        "cliente": "EcoTech SA",
+        "items": [
+            {"nombre": "Sensor A", "precio": 50, "cantidad": 2},
+            {"nombre": "Sensor B", "precio": 30, "cantidad": 1}
+        ]
+    }
+    resultado = procesar_pedido(pedido_ejemplo)
+    print(f'Cliente: {resultado["cliente"]}')
+    print(f'Total a pagar: ${resultado["total"]:.2f}')
