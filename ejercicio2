@@ -1,23 +1,23 @@
-
-def procesar_pedido(pedido):
-    total = 0
-    for item in pedido["items"]:
-        total += item["precio"] * item["cantidad"]
-    
-    if total > 100:
-        descuento = total * 0.1
-        total = total - descuento
-    
-    return {"cliente": pedido["cliente"], "total": total}
-
+def procesar_pedidos(lista_pedidos):
+    total_ingresos = 0
+    productos_vendidos = {}
+    for pedido in lista_pedidos:
+        total_ingresos += pedido["total"]
+        for producto in pedido["productos"]:
+            if producto in productos_vendidos:
+                productos_vendidos[producto] += 1
+            else:
+                productos_vendidos[producto] = 1  
+    producto_mas_vendido = max(productos_vendidos, key=productos_vendidos.get)
+    return (total_ingresos, producto_mas_vendido)
 if __name__ == "__main__":
-    pedido_ejemplo = {
-        "cliente": "EcoTech SA",
-        "items": [
-            {"nombre": "Sensor A", "precio": 50, "cantidad": 2},
-            {"nombre": "Sensor B", "precio": 30, "cantidad": 1}
-        ]
-    }
-    resultado = procesar_pedido(pedido_ejemplo)
-    print(f'Cliente: {resultado["cliente"]}')
-    print(f'Total a pagar: ${resultado["total"]:.2f}')
+    pedidos = [
+        {"id": 1, "productos": ["cafe", "medialuna"], "total": 1500},
+        {"id": 2, "productos": ["cafe", "tostado"], "total": 2200},
+        {"id": 3, "productos": ["medialuna", "jugo"], "total": 1800}
+    ]
+    ingresos, mas_vendido = procesar_pedidos(pedidos)
+    print("--- REPORTE CAFETERIA ---")
+    print(f"Total ingresos del dia: ${ingresos}")
+    print(f"Producto mas vendido: {mas_vendido}")
+
